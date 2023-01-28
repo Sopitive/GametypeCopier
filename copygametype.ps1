@@ -57,7 +57,7 @@ Function Register-Watcher {
         Write-Host "Hot Reload folder for $game does not exist. Creating folder... done"
     }
 
-    $outpath = "C:\Users\$env:UserName\AppData\LocalLow\MCC\Temporary\$game\HotReload"
+    $outpath = "~\AppData\LocalLow\MCC\Temporary\$game\HotReload"
             Write-Host "Copying file to $outpath"
             Copy-Item $pwd\$name -Destination $outpath\$name
             Copy-Item $pwd\$name -Destination $outpath\.mglo
