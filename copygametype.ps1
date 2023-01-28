@@ -8,6 +8,9 @@ $convertToBin = $false;
 #Change this to true if you want to copy the converted .bin file to the built-in game variant folder
 $copyToBuiltIn = $false;
 
+#Change this to true to delete the .mglo file output from MegaloEdit and only keep the one copied to the HotReload folder.
+$deleteMapsMegaloMglo = $false;
+
 
 Function Register-Watcher {
     param ($folder)
@@ -61,6 +64,11 @@ Function Register-Watcher {
             Write-Host "Copying file to $outpath"
             Copy-Item $pwd\$name -Destination $outpath\$name
             Copy-Item $pwd\$name -Destination $outpath\.mglo
+
+            if ($deleteMapsMegaloMglo) {
+                Write-Host "Deleting $pwd\$name"
+                Remove-Item $pwd\$name
+            }
 
             if (!($convertToBin)) {
                 return;
