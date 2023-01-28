@@ -1,7 +1,12 @@
 
-#Modify this depending on your steam path
-$steamDir = "C:\ProgramFiles(x86)\steam\steamapps\common\Halo The Master Chief Collection\haloreach\game_variants"
+#Modify this depending on your steam path. This is to copy a converted .bin file to the built in game variant path
+$gameDir = "C:\ProgramFiles(x86)\steam\steamapps\common\Halo The Master Chief Collection\haloreach\game_variants"
 
+#Change this to true if you want to convert the .mglo file to a .bin file automatically
+$convertToBin = $false;
+
+#Change this to true if you want to copy the converted .bin file to the built-in game variant folder
+$copyToBuiltIn = $false;
 
 
 Function Register-Watcher {
@@ -57,6 +62,10 @@ Function Register-Watcher {
             Copy-Item $pwd\$name -Destination $outpath\$name
             Copy-Item $pwd\$name -Destination $outpath\.mglo
 
+            if (!($convertToBin)) {
+                return;
+            }
+
             Write-Host "Converting $name to .bin..."
             [byte[]]$bytes = Get-Content $path -Encoding byte
 
@@ -102,7 +111,10 @@ Function Register-Watcher {
             }
             
             [System.IO.File]::WriteAllBytes("$pwd\$nameNoExt.bin", $sus)
-            Copy-Item $pwd\$nameNoExt.bin -Destination "$steamDir"
+
+            if (copyToBuiltIn) {
+                Copy-Item $pwd\$nameNoExt.bin -Destination "$gameDir"
+            }
         }
     ')
 
